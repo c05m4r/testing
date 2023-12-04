@@ -21,7 +21,7 @@ class Spider(scrapy.Spider):
         res = requests.get(response.url)
         print(f'({self.counter}) => {response.url}')
 
-        with open("uader_enlaces.csv", "a") as archivo:
+        with open("output.csv", "a") as archivo:
             writer = csv.writer(archivo)
 
             estado = "ERROR"
