@@ -45,7 +45,7 @@ Proyecto para testear dominios de una web e informar el estado de los mismos.
     <summary>Desplegar</summary> 
 
 
-    ``` bash
+    ```  bash
 
     echo -e "API_KEY=<clave>\nCHAT_ID=@nombrecanal\nNAME=<nombre>\nALLOWED_DOMAIN=<dominio>\nSTART_URL=<https://dominio>" >> .env
 
@@ -55,7 +55,7 @@ Proyecto para testear dominios de una web e informar el estado de los mismos.
 
 7. Ejecutar el script
 
-    ``` bash
+    ```  bash
 
     scrapy runspider scraper.py --nolog
 
