@@ -21,6 +21,7 @@ Para notificaciones en Telegram definir **telegram.env**
     ``` bash
 
     cd ./testing/backups
+    mkdir backups envs
 
     ```
 
@@ -91,4 +92,4 @@ Para notificaciones en Telegram definir **telegram.env**
 
     python backup.py
 
-    ```****
+    ```
