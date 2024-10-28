@@ -20,6 +20,9 @@ export class SandboxPage {
     readonly botonPopupTextoPopupEjemplo: Locator;
     readonly botonPopupTextoAparecioPopup: Locator;
     readonly botonPopupCerrar: Locator;
+    readonly shadowDOMh2: Locator;
+    readonly shadowDOMp: Locator;
+    readonly tablaEstaticaNombres: string[];
 
     constructor(page: Page) {
         this.page = page;
@@ -39,6 +42,9 @@ export class SandboxPage {
         this.botonPopupTextoPopupEjemplo = page.locator('#contained-modal-title-vcenter');
         this.botonPopupTextoAparecioPopup = page.getByLabel('Popup de ejemplo').getByRole('paragraph');
         this.botonPopupCerrar = page.getByRole('button', { name: 'Cerrar' });
+        this.shadowDOMh2 = page.locator('#shadow-root-example').getByText('Shadow DOM', { exact: true });
+        this.shadowDOMp = page.locator('#shadow-host');
+        this.tablaEstaticaNombres = ['Messi', 'Ronaldo', 'Mbappe'];
     }
 
     async botonDinamicoClick(){
@@ -90,5 +96,13 @@ export class SandboxPage {
 
     async cerrarPopup(){
         await this.botonPopupCerrar.click();
+    }
+
+    async cargarColumnaNombresTablaEstatica(){
+        return this.page.$$eval('h2:has-text("Tabla estática") + table tbody tr td:nth-child(2)', elements => elements.map(element => element.textContent));
+    }
+
+    async cargarTablaDinamica(){
+        return this.page.$$eval('h2:has-text("Tabla dinámica") + table tbody tr td', elements => elements.map(element => element.textContent));
     }
 }

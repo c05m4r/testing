@@ -75,7 +75,17 @@ export default defineConfig({
       testIgnore: '/tests/tests-examples/*',
       testMatch: '/tests/thefreerangetester/without_pom/*.spec.ts',
       use: {
-        ...devices['Pixel 5'],
+        ...devices['Galaxy S5'],
+        baseURL: 'https://thefreerangetester.github.io/sandbox-automation-testing/',
+       },
+    },
+
+    {
+      name: 'thefreerangetester_ios',
+      testIgnore: '/tests/tests-examples/*',
+      testMatch: '/tests/thefreerangetester/without_pom/*.spec.ts',
+      use: {
+        ...devices['iPad Pro 11'],
         baseURL: 'https://thefreerangetester.github.io/sandbox-automation-testing/',
        },
     },
