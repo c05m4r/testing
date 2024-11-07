@@ -1,0 +1,42 @@
+services:
+  kiwi_pg:
+    container_name: kiwi_pg
+    image: postgres:latest
+    restart: on-failure
+    volumes:
+      - /postgres/kiwi/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: kiwi
+      POSTGRES_USER: kiwi
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+    secrets:
+      - db-password
+  kiwi_web:
+    container_name: kiwi_web
+    depends_on:
+      - kiwi_pg
+    restart: on-failure
+    image: kiwitcms/kiwi:latest
+    ports:
+      - 80:8080
+      - 443:8443
+    volumes:
+      - uploads:/Kiwi/uploads:Z
+      - ./tests/init-docker-secrets/:/Kiwi/secrets/:Z
+    environment:
+      KIWI_DB_ENGINE: django.db.backends.postgresql
+      KIWI_DB_HOST: kiwi_pg
+      KIWI_DB_PORT: 5432
+      KIWI_DB_NAME: kiwi
+      KIWI_DB_USER: kiwi
+      KIWI_DB_PASSWORD: /run/secrets/db-password
+    secrets:
+      - db-password
+    cap_drop:
+      - ALL
+secrets:
+  db-password:
+    file: secrets/db-password.txt
+volumes:
+  db_data: null
+  uploads: null

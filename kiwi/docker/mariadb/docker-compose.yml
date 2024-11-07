@@ -1,0 +1,58 @@
+services:
+    kiwi_mariadb:
+        container_name: kiwi_mariadb
+        image: mariadb:latest
+        command:
+            --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        volumes:
+        - /mariadb/kiwi/data:/var/lib/postgresql/data
+        restart: on-failure
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db-root-password
+            MYSQL_DATABASE_FILE: /run/secrets/db-name
+            MYSQL_USER_FILE: /run/secrets/db-user
+            MYSQL_PASSWORD_FILE: /run/secrets/db-password
+        secrets:
+          - db-root-password
+          - db-name
+          - db-user
+          - db-password
+
+    web:
+        container_name: kiwi_web
+        depends_on:
+            - kiwi_mariadb
+        restart: on-failure
+        image: kiwitcms/kiwi:latest
+        ports:
+            - 80:8080
+            - 443:8443
+        volumes:
+            - uploads:/Kiwi/uploads:Z
+            - ./tests/init-docker-secrets/:/Kiwi/secrets/:Z
+        environment:
+            KIWI_DB_HOST: kiwi_mariadb
+            KIWI_DB_PORT: 3306
+            KIWI_DB_NAME: /run/secrets/db-name
+            KIWI_DB_USER: /run/secrets/db-user
+            KIWI_DB_PASSWORD: /Kiwi/secrets/db-password.txt
+        secrets:
+          - db-name
+          - db-user
+          - db-password
+        cap_drop:
+          - ALL
+
+secrets:
+   db-name:
+     file: tests/init-docker-secrets/db-name.txt
+   db-user:
+     file: tests/init-docker-secrets/db-user.txt
+   db-password:
+     file: tests/init-docker-secrets/db-password.txt
+   db-root-password:
+     file: tests/init-docker-secrets/db-root-password.txt
+
+volumes:
+    db_data:
+    uploads:
