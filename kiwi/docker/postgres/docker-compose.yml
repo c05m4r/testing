@@ -1,3 +1,5 @@
+# Despues desplegado EJECUTAR => docker exec -it kiwi_web /Kiwi/manage.py initial_setup
+
 services:
   kiwi_pg:
     container_name: kiwi_pg
